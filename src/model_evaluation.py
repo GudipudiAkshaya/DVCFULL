@@ -112,7 +112,7 @@ def save_metrics(metrics: dict, file_path: str) -> None:
 
 def main():
     try:
-        # params = load_params(params_path='params.yaml')
+        params = load_params(params_path='params.yaml')
         clf = load_model('./models/model.pkl')
         test_data = load_data('./data/processed/test_tfidf.csv')
         
@@ -122,12 +122,12 @@ def main():
         metrics = evaluate_model(clf, X_test, y_test)
         y_pred = clf.predict(X_test)
 
-        # Experiment tracking using dvclive
-        # with Live(save_dvc_exp=True) as live:
-        #     live.log_metric('accuracy', metrics['accuracy'])
-        #     live.log_metric('precision', metrics['precision'])
-        #     live.log_metric('recall', metrics['recall'])
-        #     live.log_metric('auc', metrics['auc'])
+       # Experiment tracking using dvclive
+        with Live(save_dvc_exp=True) as live:
+            live.log_metric('accuracy', metrics['accuracy'])
+            live.log_metric('precision', metrics['precision'])
+            live.log_metric('recall', metrics['recall'])
+            live.log_metric('auc', metrics['auc'])
         
         save_metrics(metrics, 'reports/metrics.json')
     except Exception as e:
